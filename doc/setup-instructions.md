@@ -5,7 +5,7 @@ The following possible setups are described in detail:
 
 * **Windows**-based setup
 * **Windows Subsystem for Linux**-based setup (WSL)
-* **Linux** based setup
+* **Linux**-based setup
 
 To follow the lecture only **1** setup is required.
 
@@ -13,7 +13,7 @@ To follow the lecture only **1** setup is required.
 
 This development setup uses Windows as the operating system.
 You can use this setup if you are working within the Windows operating system.
-Please install the following 4 tools to setup the development environment:
+Please install the following tools to setup the development environment:
 
 * **Visual Studio Code**  
   Visual Studio Code is the *text editor* we are using to write our C++ source code.  
