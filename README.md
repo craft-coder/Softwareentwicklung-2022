@@ -2,7 +2,7 @@
 
 🌻 Welcome to the repository for the lecture 📓 "Softwareentwicklung & Absicherung automatisierter Fahrfunktionen".
 
-It will contain the source code for the associated example and serves as a training place to get familiar with version controll systems.
+It will contain the source code for the associated example and serves as a training place to get familiar with version control systems.
 
 Feel free to contribute to this repository by e.g. creating a Pull-Request.
 
