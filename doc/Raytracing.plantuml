@@ -1,0 +1,22 @@
+@startuml Raytracing
+
+start
+
+:Setup Image;
+
+repeat
+
+: Create ray from eye through pixel;
+
+if (Object was hit) then (yes)
+    :Determine Object Color;
+    :Calculate Pixel color;
+else (no)
+    :Get Background Color;
+endif
+
+repeat while (any pixels left)
+
+stop
+
+@enduml
