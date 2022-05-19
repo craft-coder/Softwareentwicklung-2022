@@ -2,26 +2,23 @@
 
 int main() {
 
-    // Image
-    const int imageWidth = 3;
-    const int imageHeigth = 2;
-
-    // Open our file
+    auto width = 30;
+    auto height = 20;
 
     std::ofstream filestream;
-    filestream.open("example.ppm");
+    filestream.open("exampleImage.ppm");
 
-    filestream << "P3\n" << imageWidth << ' ' << imageHeigth << "\n255\n";
+    filestream << "P3\n";
+    filestream << width << " " << height << "\n";
+    filestream << 255 << "\n";
 
-    for (int y = imageHeigth - 1; y >= 0; y--) {
-        for (int x = 0; x < imageWidth; x++) {
-
-            // Write [0,255] value of each color component
+    for (auto y = 0; y < height; y++) {
+        for (auto x = 0; x < width; x++) {
             auto red = 255;
-            auto green = 0;
-            auto blue = 0;
+            auto green = 255;
+            auto blue = 255;
 
-           filestream << red << ' ' << green << ' ' << blue << '\n';
+            filestream << red << " " << green << " " << blue << "\n";
         }
     }
 
