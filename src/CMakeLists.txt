@@ -1,0 +1,2 @@
+add_executable(RaytracerExecutable main.cpp)
+set_target_properties(RaytracerExecutable PROPERTIES CXX_STANDARD 17)
