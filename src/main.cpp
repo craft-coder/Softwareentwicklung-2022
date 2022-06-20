@@ -5,8 +5,8 @@
 using namespace raytracer;
 
 Color background(const Ray& ray) {
-    auto startColor = Color(1.0, 1.0, 1.0);
-    auto endColor = Color(0.5, 0.7, 1.0);
+    auto startColor = Color(0.5, 0.7, 1.0);
+    auto endColor = Color(1.0, 1.0, 1.0);
 
     auto yComponent = ray.getDirection().getY();
     auto t = 0.5 * (yComponent + 1.0);
@@ -33,7 +33,7 @@ int main() {
 
     // Camera settings
     auto viewportHeight = 2.0;
-    auto viewportWidth = aspectRatio * height;
+    auto viewportWidth = aspectRatio * viewportHeight;
     auto focalLength = 1.0;
 
     auto origin = Point3(0.0, 0.0, 0.0);
