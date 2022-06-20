@@ -1,4 +1,5 @@
-add_library(RaytracerLib Vec3.cpp)
+add_library(RaytracerLib Vec3.cpp
+                         Ray.cpp)
 target_include_directories(RaytracerLib PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 set_target_properties(RaytracerLib PROPERTIES CXX_STANDARD 17)
 

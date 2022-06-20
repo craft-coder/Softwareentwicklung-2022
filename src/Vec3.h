@@ -28,4 +28,4 @@ Vec3 operator/(const Vec3& a, double v);
 using Point3 = Vec3;
 using Color = Vec3;
 
-} // namespace raytracer
+}
