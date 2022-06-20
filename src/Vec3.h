@@ -12,6 +12,8 @@ class Vec3 {
 
     double length() const;
 
+    void normalize();
+
   private:
     double x_ = 0.0;
     double y_ = 0.0;
@@ -19,5 +21,11 @@ class Vec3 {
 };
 
 Vec3 operator+(const Vec3& a, const Vec3& b);
+Vec3 operator-(const Vec3& a, const Vec3& b);
+Vec3 operator*(double v, const Vec3& a);
+Vec3 operator/(const Vec3& a, double v);
 
-} // namespace raytracer
+using Point3 = Vec3;
+using Color = Vec3;
+
+}

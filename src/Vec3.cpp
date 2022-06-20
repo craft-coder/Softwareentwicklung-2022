@@ -25,6 +25,13 @@ double Vec3::length() const {
     return std::sqrt(x_ * x_ + y_ * y_ + z_ * z_);
 }
 
+void Vec3::normalize() {
+    auto l = length();
+    x_ = x_ / l;
+    y_ = y_ / l;
+    z_ = z_ / l;
+}
+
 Vec3 operator+(const Vec3& a, const Vec3& b) {
     auto x = a.getX() + b.getX();
     auto y = a.getY() + b.getY();
@@ -34,4 +41,25 @@ Vec3 operator+(const Vec3& a, const Vec3& b) {
     return result;
 }
 
-} // namespace raytracer
+Vec3 operator-(const Vec3& a, const Vec3& b) {
+    auto x = a.getX() - b.getX();
+    auto y = a.getY() - b.getY();
+    auto z = a.getZ() - b.getZ();
+
+    auto result = Vec3(x, y, z);
+    return result;
+}
+
+Vec3 operator*(double v, const Vec3& vec) {
+    auto x = v * vec.getX();
+    auto y = v * vec.getY();
+    auto z = v * vec.getZ();
+
+    auto result = Vec3(x, y, z);
+    return result;
+}
+Vec3 operator/(const Vec3& vec, double v) {
+    return (1.0 / v) * vec;
+}
+
+}
