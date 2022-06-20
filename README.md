@@ -6,6 +6,12 @@ It will contain the source code for the associated example and serves as a train
 
 Feel free to contribute to this repository by e.g. creating a Pull-Request.
 
+To clone this repository please use e.g.
+
+```sh
+git clone --recurse-submodules https://github.com/craft-coder/Softwareentwicklung-2022.git
+```
+
 ## Contribution
 
 🛈 There are two options of how to work with this repository.
