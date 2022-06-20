@@ -10,9 +10,14 @@ class Vec3 {
     double getY() const;
     double getZ() const;
 
+    double length() const;
+
   private:
     double x_ = 0.0;
     double y_ = 0.0;
     double z_ = 0.0;
 };
+
+Vec3 operator+(const Vec3& a, const Vec3& b);
+
 } // namespace raytracer
