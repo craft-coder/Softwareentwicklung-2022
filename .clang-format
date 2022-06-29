@@ -11,4 +11,5 @@ Cpp11BracedListStyle: 'true'
 IndentWidth: '4'
 NamespaceIndentation: None
 PointerAlignment: Left
+FixNamespaceComments: 'false'
 ...

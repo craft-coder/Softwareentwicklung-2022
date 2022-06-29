@@ -22,7 +22,11 @@ double Vec3::getZ() const {
 }
 
 double Vec3::length() const {
-    return std::sqrt(x_ * x_ + y_ * y_ + z_ * z_);
+    return std::sqrt(lengthSquared());
+}
+
+double Vec3::lengthSquared() const {
+    return x_ * x_ + y_ * y_ + z_ * z_;
 }
 
 void Vec3::normalize() {
@@ -60,6 +64,10 @@ Vec3 operator*(double v, const Vec3& vec) {
 }
 Vec3 operator/(const Vec3& vec, double v) {
     return (1.0 / v) * vec;
+}
+
+double dot(const Vec3& u, const Vec3& v) {
+    return u.getX() * v.getX() + u.getY() * v.getY() + u.getZ() * v.getZ();
 }
 
 }
