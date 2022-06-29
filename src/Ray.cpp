@@ -19,4 +19,4 @@ Point3 Ray::at(double t) const {
     return origin_ + t * direction_;
 }
 
-} // namespace raytracer
+}
