@@ -1,3 +1,4 @@
+#include "Hittables.h"
 #include "Ray.h"
 #include "Sphere.h"
 #include "Vec3.h"
@@ -56,7 +57,11 @@ int main() {
     auto lowerLeftCorner = origin - Vec3(0.0, 0.0, focalLength) - horizontal / 2.0 - vertical / 2.0;
 
     // Objects in our scene
-    Sphere object(Point3(0, 0, -1), 0.5);
+    Hittables objects;
+    auto sphere = std::make_shared<Sphere>(Point3(0, 0, -1), 0.5);
+    objects.add(sphere);
+    auto floor = std::make_shared<Sphere>(Point3(0, -100.5, -1), 100.0);
+    objects.add(floor);
 
     filestream << "P3\n";
     filestream << width << " " << height << "\n";
@@ -71,7 +76,7 @@ int main() {
             direction.normalize();
 
             auto ray = Ray(origin, direction);
-            auto color = rayColor(ray, object);
+            auto color = rayColor(ray, objects);
             writeColor(filestream, color);
         }
     }
