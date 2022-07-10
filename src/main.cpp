@@ -41,7 +41,7 @@ Color rayColor(const Ray& ray, const Hittable& hittable, int depth) {
         return Color(0, 0, 0);
     }
 
-    auto minDistance = 0.0;
+    auto minDistance = 0.0001;
     auto maxDistance = 1000.0;
 
     auto hitRecord = hittable.hit(ray, minDistance, maxDistance);
