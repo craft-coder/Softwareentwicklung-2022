@@ -75,6 +75,7 @@ int main() {
     auto focalLength = 1.0;
 
     auto maxDepth = 50;
+    auto samplesPerPixel = 20;
 
     auto origin = Point3(0.0, 0.0, 0.0);
     auto horizontal = Vec3(viewportWidth, 0.0, 0.0);
@@ -94,14 +95,20 @@ int main() {
 
     for (int y = height - 1; y >= 0; --y) {
         for (auto x = 0; x < width; x++) {
-            auto u = static_cast<double>(x) / (width - 1);
-            auto v = static_cast<double>(y) / (height - 1);
 
-            auto direction = lowerLeftCorner + u * horizontal + v * vertical - origin;
-            direction.normalize();
+            Color color(0, 0, 0);
+            for (auto sample = 0; sample < samplesPerPixel; sample++) {
+                auto u = (x + randomDouble(0.0, 1.0)) / (width - 1);
+                auto v = (y + randomDouble(0.0, 1.0)) / (height - 1);
 
-            auto ray = Ray(origin, direction);
-            auto color = rayColor(ray, objects, maxDepth);
+                auto direction = lowerLeftCorner + u * horizontal + v * vertical - origin;
+                direction.normalize();
+
+                auto ray = Ray(origin, direction);
+                color = color + rayColor(ray, objects, maxDepth);
+            }
+            color = color / samplesPerPixel;
+
             writeColor(filestream, color);
         }
     }
