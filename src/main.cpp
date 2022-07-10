@@ -1,4 +1,5 @@
 #include "Hittables.h"
+#include "Random.h"
 #include "Ray.h"
 #include "Sphere.h"
 #include "Vec3.h"
@@ -23,14 +24,36 @@ void writeColor(std::ofstream& filestream, const Color& color) {
     filestream << red << " " << green << " " << blue << "\n";
 }
 
-Color rayColor(const Ray& ray, const Hittable& hittable) {
+Vec3 randomInUnitSphere() {
+    while (true) {
+        auto x = randomDouble(0.0, 1.0);
+        auto y = randomDouble(0.0, 1.0);
+        auto z = randomDouble(0.0, 1.0);
+        auto p = Vec3(x, y, z);
+        if (p.lengthSquared() >= 1) continue;
+        return p;
+    }
+}
+
+Color rayColor(const Ray& ray, const Hittable& hittable, int depth) {
+    // If we've exceeded the ray bounce limit, no more light is gathered.
+    if (depth <= 0) {
+        return Color(0, 0, 0);
+    }
+
     auto minDistance = 0.0;
     auto maxDistance = 1000.0;
 
     auto hitRecord = hittable.hit(ray, minDistance, maxDistance);
     if (hitRecord.has_value()) {
+        auto point = hitRecord.value().point;
         auto normal = hitRecord.value().normal;
-        return 0.5 * (normal + Color(1, 1, 1));
+
+        auto pointInSphere = point + normal + randomInUnitSphere();
+        auto direction = pointInSphere - point;
+
+        auto ray = Ray(point, direction);
+        return 0.5 * rayColor(ray, hittable, depth - 1);
     }
 
     return background(ray);
@@ -50,6 +73,8 @@ int main() {
     auto viewportHeight = 2.0;
     auto viewportWidth = aspectRatio * viewportHeight;
     auto focalLength = 1.0;
+
+    auto maxDepth = 50;
 
     auto origin = Point3(0.0, 0.0, 0.0);
     auto horizontal = Vec3(viewportWidth, 0.0, 0.0);
@@ -76,7 +101,7 @@ int main() {
             direction.normalize();
 
             auto ray = Ray(origin, direction);
-            auto color = rayColor(ray, objects);
+            auto color = rayColor(ray, objects, maxDepth);
             writeColor(filestream, color);
         }
     }
