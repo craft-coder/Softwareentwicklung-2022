@@ -1,5 +1,6 @@
 #include "Hittables.h"
 #include "Lambertian.h"
+#include "Metal.h"
 #include "Random.h"
 #include "Ray.h"
 #include "Sphere.h"
@@ -18,9 +19,14 @@ Color background(const Ray& ray) {
 }
 
 void writeColor(std::ofstream& filestream, const Color& color) {
-    auto red = static_cast<int>(255.999 * color.getX());
-    auto green = static_cast<int>(255.999 * color.getY());
-    auto blue = static_cast<int>(255.999 * color.getZ());
+    // gamma-correct for gamma=2.0.
+    auto r = std::sqrt(color.getX());
+    auto g = std::sqrt(color.getY());
+    auto b = std::sqrt(color.getZ());
+
+    auto red = static_cast<int>(255.999 * r);
+    auto green = static_cast<int>(255.999 * g);
+    auto blue = static_cast<int>(255.999 * b);
 
     filestream << red << " " << green << " " << blue << "\n";
 }
@@ -31,7 +37,7 @@ Color rayColor(const Ray& ray, const Hittable& hittable, int depth) {
         return Color(0, 0, 0);
     }
 
-    auto minDistance = 0.0001;
+    auto minDistance = 0.001;
     auto maxDistance = 1000.0;
 
     auto hitRecord = hittable.hit(ray, minDistance, maxDistance);
@@ -70,7 +76,7 @@ int main() {
     auto focalLength = 1.0;
 
     auto maxDepth = 50;
-    auto samplesPerPixel = 20;
+    auto samplesPerPixel = 100;
 
     auto origin = Point3(0.0, 0.0, 0.0);
     auto horizontal = Vec3(viewportWidth, 0.0, 0.0);
@@ -79,12 +85,18 @@ int main() {
 
     // Materials
     auto red = std::make_shared<Lambertian>(Color(0.9, 0.1, 0.1));
+    auto yellow = std::make_shared<Lambertian>(Color(0.9, 0.9, 0.1));
+    auto metal = std::make_shared<Metal>(Color(0.8, 0.8, 0.8));
     auto gray = std::make_shared<Lambertian>(Color(0.5, 0.5, 0.5));
 
     // Objects in our scene
     Hittables objects;
-    auto sphere = std::make_shared<Sphere>(Point3(0, 0, -1), 0.5, red);
+    auto sphere = std::make_shared<Sphere>(Point3(-0.3, 0, -1.3), 0.5, red);
     objects.add(sphere);
+    auto metalSphere = std::make_shared<Sphere>(Point3(1, 0, -1.5), 0.5, metal);
+    objects.add(metalSphere);
+    auto smallBall = std::make_shared<Sphere>(Point3(0.2, -0.3, -0.9), 0.2, yellow);
+    objects.add(smallBall);
     auto floor = std::make_shared<Sphere>(Point3(0, -100.5, -1), 100.0, gray);
     objects.add(floor);
 
