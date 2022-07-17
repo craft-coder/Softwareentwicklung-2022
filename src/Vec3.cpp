@@ -66,6 +66,10 @@ Vec3 operator/(const Vec3& vec, double v) {
     return (1.0 / v) * vec;
 }
 
+Vec3 operator*(const Vec3& u, const Vec3& v) {
+    return Vec3(u.getX() * v.getX(), u.getY() * v.getY(), u.getZ() * v.getZ());
+}
+
 double dot(const Vec3& u, const Vec3& v) {
     return u.getX() * v.getX() + u.getY() * v.getY() + u.getZ() * v.getZ();
 }

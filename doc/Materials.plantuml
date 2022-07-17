@@ -1,0 +1,12 @@
+abstract class Material {
+    //bool scatter(...)//
+}
+class Lambertian {
+    bool scatter(...)
+}
+class Metal {
+    bool scatter(...)
+}
+
+Material <|-- Lambertian
+Material <|-- Metal

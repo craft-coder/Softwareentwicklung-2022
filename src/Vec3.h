@@ -25,6 +25,7 @@ Vec3 operator+(const Vec3& a, const Vec3& b);
 Vec3 operator-(const Vec3& a, const Vec3& b);
 Vec3 operator*(double v, const Vec3& a);
 Vec3 operator/(const Vec3& a, double v);
+Vec3 operator*(const Vec3& u, const Vec3& v);
 double dot(const Vec3& u, const Vec3& v);
 
 using Point3 = Vec3;
