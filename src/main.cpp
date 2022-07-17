@@ -1,4 +1,5 @@
 #include "Hittables.h"
+#include "Lambertian.h"
 #include "Random.h"
 #include "Ray.h"
 #include "Sphere.h"
@@ -24,17 +25,6 @@ void writeColor(std::ofstream& filestream, const Color& color) {
     filestream << red << " " << green << " " << blue << "\n";
 }
 
-Vec3 randomInUnitSphere() {
-    while (true) {
-        auto x = randomDouble(0.0, 1.0);
-        auto y = randomDouble(0.0, 1.0);
-        auto z = randomDouble(0.0, 1.0);
-        auto p = Vec3(x, y, z);
-        if (p.lengthSquared() >= 1) continue;
-        return p;
-    }
-}
-
 Color rayColor(const Ray& ray, const Hittable& hittable, int depth) {
     // If we've exceeded the ray bounce limit, no more light is gathered.
     if (depth <= 0) {
@@ -45,18 +35,23 @@ Color rayColor(const Ray& ray, const Hittable& hittable, int depth) {
     auto maxDistance = 1000.0;
 
     auto hitRecord = hittable.hit(ray, minDistance, maxDistance);
-    if (hitRecord.has_value()) {
-        auto point = hitRecord.value().point;
-        auto normal = hitRecord.value().normal;
-
-        auto pointInSphere = point + normal + randomInUnitSphere();
-        auto direction = pointInSphere - point;
-
-        auto ray = Ray(point, direction);
-        return 0.5 * rayColor(ray, hittable, depth - 1);
+    if (!hitRecord.has_value()) { // Did we hit anything?
+        return background(ray);
     }
 
-    return background(ray);
+    auto hit = hitRecord.value();
+    if (hit.material == nullptr) { // Check for nullptr
+        return Color(0, 0, 0);
+    }
+
+    Ray scattered;
+    Color attenuation;
+    auto isScattering = hit.material->scatter(ray, hit, attenuation, scattered);
+    if (!isScattering) { // Does the material scatter?
+        return Color(0, 0, 0);
+    }
+
+    return attenuation * rayColor(scattered, hittable, depth - 1);
 }
 
 int main() {
@@ -82,11 +77,15 @@ int main() {
     auto vertical = Vec3(0.0, viewportHeight, 0.0);
     auto lowerLeftCorner = origin - Vec3(0.0, 0.0, focalLength) - horizontal / 2.0 - vertical / 2.0;
 
+    // Materials
+    auto red = std::make_shared<Lambertian>(Color(0.9, 0.1, 0.1));
+    auto gray = std::make_shared<Lambertian>(Color(0.5, 0.5, 0.5));
+
     // Objects in our scene
     Hittables objects;
-    auto sphere = std::make_shared<Sphere>(Point3(0, 0, -1), 0.5);
+    auto sphere = std::make_shared<Sphere>(Point3(0, 0, -1), 0.5, red);
     objects.add(sphere);
-    auto floor = std::make_shared<Sphere>(Point3(0, -100.5, -1), 100.0);
+    auto floor = std::make_shared<Sphere>(Point3(0, -100.5, -1), 100.0, gray);
     objects.add(floor);
 
     filestream << "P3\n";
